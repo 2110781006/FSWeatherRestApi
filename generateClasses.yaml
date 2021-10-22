@@ -1,0 +1,161 @@
+swagger: '2.0'
+info:
+  description: fsuWeatherRest API
+  version: 1.0.0
+  title: fsuWeatherRest API
+  # put the contact info for your development or API team
+  contact:
+    email: team-m@fh-burgenland.at
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: localhost:8080
+basePath: /api/v1
+schemes:
+  - http
+  - https
+# tags are used for organizing operations
+tags:
+  - name: developers
+    description: Operations available to regular developers
+
+paths:
+  /weather/getCurrentWeatherOfLocation:
+    get:
+      tags:
+        - developers
+      summary: get current weather of location
+      operationId: getCurrentWeatherOfLocation
+      description: get current weather of location
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: city
+          required: true
+          description: city e.g. Eisenstadt
+          type: string
+      responses:
+        200:
+          description: weather sucessfully loaded
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Weather'
+        400:
+          description: bad input parameter
+  /weather/getStoredWeatherSetOfLocation:
+    get:
+      tags:
+        - developers
+      summary: get stored weather of location
+      operationId: getStoredWeatherSetOfLocation
+      description: get stored weather of location
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: city
+          required: true
+          description: city e.g. Eisenstadt
+          type: string
+      responses:
+        200:
+          description: weatherset sucessfully loaded
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Weather'
+        400:
+          description: bad input parameter
+  /weather/saveCurrentWeatherOfLocation:
+    post:
+      tags:
+        - developers
+      summary: adds current weather to aws iot/dynamodb
+      operationId: saveCurrentWeatherOfLocation
+      description: adds current weather to aws iot/dynamodb
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: city
+          required: true
+          description: city
+          type: string
+      responses:
+        201:
+          description: weather saved
+        400:
+          description: invalid input, object invalid
+
+definitions:
+  Weather:
+    type: object
+    required:
+    properties:
+      location:
+        $ref: '#/definitions/Location'
+      time:
+        type: string
+        format: date-time
+        description: Creation date and time
+        example: "2021-01-30T08:30:00Z"
+      temperature:
+        type: number
+        example: 1.23
+      description:
+        type: string
+        example: fog
+      windspeed:
+        type: number
+        example: 1.23
+      winddegree:
+        type: number
+        example: 1.23
+      winddirection:
+        type: string
+        example: N
+      pressure:
+        type: number
+        example: 1.23
+      humidity:
+        type: number
+        example: 1.23
+      cloudcover:
+        type: number
+        example: 1.23
+      feelslike:
+        type: number
+        example: 1.23
+      visibility:
+        type: number
+        example: 1.23
+
+  Location:
+    type: object
+    required:
+    properties:
+      city:
+        type: string
+        example: Eisenstadt
+      zip:
+        type: integer
+        example: 7000
+      country:
+        type: string
+        example: Austria
+      region:
+        type: string
+        example: Burgenland
+      lat:
+        type: number
+        example: 1.23
+      lon:
+        type: number
+        example: 2.34
+      timezone:
+        type: string
+        example: Europe/Vienna
