@@ -51,7 +51,7 @@ public class OpenAPI2SpringBoot implements CommandLineRunner {
 
     static void awsdynamodbExample()
     {
-        BasicAWSCredentials credentials = new BasicAWSCredentials("AKIA42TYCWPVBGOMPNUO", "5h7YMp9fWhLDtbhQLxMjKWQNkhA8cfbds9YAD45m");
+        BasicAWSCredentials credentials = new BasicAWSCredentials("x", "y");
         final AmazonDynamoDB ddb = AmazonDynamoDBClientBuilder.standard().withRegion("us-east-1").withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
 
         DynamoDB dynamoDB = new DynamoDB(ddb);
