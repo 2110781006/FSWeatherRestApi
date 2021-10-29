@@ -5,6 +5,8 @@
  */
 package org.openapitools.api;
 
+import org.openapitools.connectors.WeatherstackConnector;
+import org.openapitools.model.Credentials;
 import org.openapitools.model.Weather;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -19,10 +21,13 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-10-22T09:18:47.043380800+02:00[Europe/Berlin]")
+import java.util.function.Consumer;
+
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-10-22T09:25:01.837144200+02:00[Europe/Berlin]")
 @Validated
 @Api(value = "weather", description = "the weather API")
 public interface WeatherApi {
@@ -39,17 +44,30 @@ public interface WeatherApi {
      * @return weather sucessfully loaded (status code 200)
      *         or bad input parameter (status code 400)
      */
-    @ApiOperation(value = "get current weather of location", nickname = "getCurrentWeatherOfLocation", notes = "get current weather of location", response = Object.class, tags={ "developers", })
+    @ApiOperation(value = "get current weather of location", nickname = "getCurrentWeatherOfLocation", notes = "get current weather of location", response = Weather.class, tags={ "developers", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "weather sucessfully loaded", response = Object.class),
+        @ApiResponse(code = 200, message = "weather sucessfully loaded", response = Weather.class),
         @ApiResponse(code = 400, message = "bad input parameter") })
     @GetMapping(
         value = "/weather/getCurrentWeatherOfLocation",
         produces = { "application/json" }
     )
-    default ResponseEntity<Object> getCurrentWeatherOfLocation(@NotNull @ApiParam(value = "city e.g. Eisenstadt", required = true) @Valid @RequestParam(value = "city", required = true) String city) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    default ResponseEntity<Weather> getCurrentWeatherOfLocation(@NotNull @ApiParam(value = "city e.g. Eisenstadt", required = true) @Valid @RequestParam(value = "city", required = true) String city) {
 
+        Weather weather;
+
+        try
+        {
+            weather = new WeatherstackConnector(Credentials.getInstance().getWeatherstackToken()).getCurrentWeatherOfLocation(city);
+
+            return new ResponseEntity<>(weather, HttpStatus.OK);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
     }
 
 

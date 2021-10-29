@@ -40,8 +40,7 @@ paths:
           description: weather sucessfully loaded
           schema:
             type: object
-            items:
-              $ref: '#/definitions/Weather'
+            $ref: '#/definitions/Weather'
         400:
           description: bad input parameter
   /weather/getStoredWeatherSetOfLocation:
@@ -141,9 +140,6 @@ definitions:
       city:
         type: string
         example: Eisenstadt
-      zip:
-        type: integer
-        example: 7000
       country:
         type: string
         example: Austria

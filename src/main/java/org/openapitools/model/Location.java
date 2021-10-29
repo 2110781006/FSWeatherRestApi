@@ -18,9 +18,6 @@ public class Location   {
   @JsonProperty("city")
   private String city;
 
-  @JsonProperty("zip")
-  private Integer zip;
-
   @JsonProperty("country")
   private String country;
 
@@ -56,25 +53,12 @@ public class Location   {
     this.city = city;
   }
 
-  public Location zip(Integer zip) {
-    this.zip = zip;
-    return this;
-  }
-
   /**
    * Get zip
    * @return zip
   */
   @ApiModelProperty(example = "7000", value = "")
 
-
-  public Integer getZip() {
-    return zip;
-  }
-
-  public void setZip(Integer zip) {
-    this.zip = zip;
-  }
 
   public Location country(String country) {
     this.country = country;
@@ -189,7 +173,6 @@ public class Location   {
     }
     Location location = (Location) o;
     return Objects.equals(this.city, location.city) &&
-        Objects.equals(this.zip, location.zip) &&
         Objects.equals(this.country, location.country) &&
         Objects.equals(this.region, location.region) &&
         Objects.equals(this.lat, location.lat) &&
@@ -199,7 +182,7 @@ public class Location   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(city, zip, country, region, lat, lon, timezone);
+    return Objects.hash(city, country, region, lat, lon, timezone);
   }
 
   @Override
@@ -208,7 +191,6 @@ public class Location   {
     sb.append("class Location {\n");
     
     sb.append("    city: ").append(toIndentedString(city)).append("\n");
-    sb.append("    zip: ").append(toIndentedString(zip)).append("\n");
     sb.append("    country: ").append(toIndentedString(country)).append("\n");
     sb.append("    region: ").append(toIndentedString(region)).append("\n");
     sb.append("    lat: ").append(toIndentedString(lat)).append("\n");
