@@ -1,16 +1,11 @@
 package org.openapitools.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
-import org.openapitools.model.Location;
-import org.openapitools.jackson.nullable.JsonNullable;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * Weather
@@ -21,8 +16,7 @@ public class Weather   {
   private Location location;
 
   @JsonProperty("time")
-  @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime time;
+  private String time;
 
   @JsonProperty("temperature")
   private BigDecimal temperature;
@@ -59,6 +53,27 @@ public class Weather   {
     return this;
   }
 
+  public Weather()
+  {
+
+  }
+
+  public Weather(Location location, String time, BigDecimal temperature, String description, BigDecimal windspeed, BigDecimal winddegree, String winddirection, BigDecimal pressure, BigDecimal humidity, BigDecimal cloudcover, BigDecimal feelslike, BigDecimal visibility)
+  {
+    this.location = location;
+    this.time = time;
+    this.temperature = temperature;
+    this.description = description;
+    this.windspeed = windspeed;
+    this.winddegree = winddegree;
+    this.winddirection = winddirection;
+    this.pressure = pressure;
+    this.humidity = humidity;
+    this.cloudcover = cloudcover;
+    this.feelslike = feelslike;
+    this.visibility = visibility;
+  }
+
   /**
    * Get location
    * @return location
@@ -75,7 +90,7 @@ public class Weather   {
     this.location = location;
   }
 
-  public Weather time(OffsetDateTime time) {
+  public Weather time(String time) {
     this.time = time;
     return this;
   }
@@ -88,11 +103,11 @@ public class Weather   {
 
   @Valid
 
-  public OffsetDateTime getTime() {
+  public String getTime() {
     return time;
   }
 
-  public void setTime(OffsetDateTime time) {
+  public void setTime(String time) {
     this.time = time;
   }
 

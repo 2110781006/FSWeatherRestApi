@@ -5,27 +5,26 @@
  */
 package org.openapitools.api;
 
+import io.swagger.annotations.*;
+import org.apache.commons.logging.LogFactory;
+import org.openapitools.connectors.AwsDynamoDbConnector;
+import org.openapitools.connectors.AwsIotConnector;
 import org.openapitools.connectors.WeatherstackConnector;
 import org.openapitools.model.Credentials;
 import org.openapitools.model.Weather;
-import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.io.IOException;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-10-22T09:25:01.837144200+02:00[Europe/Berlin]")
 @Validated
@@ -53,6 +52,8 @@ public interface WeatherApi {
         produces = { "application/json" }
     )
     default ResponseEntity<Weather> getCurrentWeatherOfLocation(@NotNull @ApiParam(value = "city e.g. Eisenstadt", required = true) @Valid @RequestParam(value = "city", required = true) String city) {
+
+        LogFactory.getLog(this.getClass()).info("getCurrentWeatherOfLocation: "+city);
 
         Weather weather;
 
@@ -88,16 +89,24 @@ public interface WeatherApi {
         produces = { "application/json" }
     )
     default ResponseEntity<List<Weather>> getStoredWeatherSetOfLocation(@NotNull @ApiParam(value = "city e.g. Eisenstadt", required = true) @Valid @RequestParam(value = "city", required = true) String city) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"visibility\" : 1.23, \"feelslike\" : 1.23, \"temperature\" : 1.23, \"description\" : \"fog\", \"windspeed\" : 1.23, \"humidity\" : 1.23, \"location\" : { \"zip\" : 7000, \"country\" : \"Austria\", \"city\" : \"Eisenstadt\", \"timezone\" : \"Europe/Vienna\", \"lon\" : 2.34, \"region\" : \"Burgenland\", \"lat\" : 1.23 }, \"time\" : \"2021-01-30T08:30:00Z\", \"pressure\" : 1.23, \"winddegree\" : 1.23, \"winddirection\" : \"N\", \"cloudcover\" : 1.23 }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+        LogFactory.getLog(this.getClass()).info("getStoredWeatherSetOfLocation: "+city);
+
+        ArrayList<Weather> weatherSet;
+
+        try
+        {
+            weatherSet = new AwsDynamoDbConnector(Credentials.getInstance().getAwsAccessKey(), Credentials.getInstance().getAwsSecretKey())
+                    .getStoredWeatherSetOfLocation(city);
+
+            return new ResponseEntity<>(weatherSet, HttpStatus.OK);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 
     }
 
@@ -118,7 +127,28 @@ public interface WeatherApi {
         value = "/weather/saveCurrentWeatherOfLocation"
     )
     default ResponseEntity<Void> saveCurrentWeatherOfLocation(@NotNull @ApiParam(value = "city", required = true) @Valid @RequestParam(value = "city", required = true) String city) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+        LogFactory.getLog(this.getClass()).info("saveCurrentWeatherOfLocation: "+city);
+
+        Weather weather;
+        Credentials credentials = Credentials.getInstance();
+
+        try
+        {
+            weather = new WeatherstackConnector(credentials.getWeatherstackToken()).getCurrentWeatherOfLocation(city);
+
+            AwsIotConnector awsIotConnector = new AwsIotConnector(credentials.getCaCertPath(), credentials.getCertPath(), credentials.getCaKeyPath());
+
+            awsIotConnector.pushWeather(weather);
+
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 
     }
 

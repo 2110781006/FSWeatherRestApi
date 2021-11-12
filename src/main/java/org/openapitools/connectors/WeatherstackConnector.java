@@ -1,6 +1,7 @@
 package org.openapitools.connectors;
 
 import com.google.gson.Gson;
+import org.joda.time.field.OffsetDateTimeField;
 import org.openapitools.model.Location;
 import org.openapitools.model.Weather;
 
@@ -10,6 +11,8 @@ import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
@@ -60,7 +63,19 @@ public class WeatherstackConnector
 
         weather.setLocation(location);
 
-        System.out.println(weather.toString());
+        Map currentMap = (Map) weatherMap.get("current");
+
+        weather.setTime(locationMap.get("localtime").toString());
+        weather.setTemperature(new BigDecimal(Double.valueOf(currentMap.get("temperature").toString())));
+        weather.setDescription(currentMap.get("weather_descriptions").toString());
+        weather.setWindspeed(new BigDecimal(Double.valueOf(currentMap.get("wind_speed").toString())));
+        weather.setWinddegree(new BigDecimal(Double.valueOf(currentMap.get("wind_degree").toString())));
+        weather.setWinddirection(currentMap.get("wind_dir").toString());
+        weather.setPressure(new BigDecimal(Double.valueOf(currentMap.get("pressure").toString())));
+        weather.setHumidity(new BigDecimal(Double.valueOf(currentMap.get("humidity").toString())));
+        weather.setCloudcover(new BigDecimal(Double.valueOf(currentMap.get("cloudcover").toString())));
+        weather.setFeelslike(new BigDecimal(Double.valueOf(currentMap.get("feelslike").toString())));
+        weather.setVisibility(new BigDecimal(Double.valueOf(currentMap.get("visibility").toString())));
 
         return weather;
     }
