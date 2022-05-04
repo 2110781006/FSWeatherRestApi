@@ -29,6 +29,4 @@ jobs:
       with:
         name: Package
         path: staging
-    - name: Run application
-      run: java -jar target/openapi-spring-1.0.0.jar a b c d d d
 
