@@ -1,0 +1,16 @@
+org/openapitools/connectors/AwsDynamoDbConnector.class
+org/openapitools/connectors/WeatherstackConnector.class
+org/openapitools/api/WeatherApiController.class
+org/openapitools/configuration/OpenAPIDocumentationConfig.class
+org/openapitools/model/Weather.class
+org/openapitools/OpenAPI2SpringBoot$ExitException.class
+org/openapitools/api/ApiUtil.class
+org/openapitools/configuration/HomeController.class
+org/openapitools/model/Location.class
+org/openapitools/RFC3339DateFormat.class
+org/openapitools/model/Credentials.class
+org/openapitools/configuration/OpenAPIDocumentationConfig$BasePathAwareRelativePathProvider.class
+org/openapitools/OpenAPI2SpringBoot.class
+org/openapitools/api/WeatherApi.class
+org/openapitools/connectors/AwsIotConnector.class
+org/openapitools/OpenAPI2SpringBoot$1.class

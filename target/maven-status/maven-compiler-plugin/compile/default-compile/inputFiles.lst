@@ -1,0 +1,13 @@
+/workspace/fsuWeatherRestApi/src/main/java/org/openapitools/model/Credentials.java
+/workspace/fsuWeatherRestApi/src/main/java/org/openapitools/api/WeatherApiController.java
+/workspace/fsuWeatherRestApi/src/main/java/org/openapitools/OpenAPI2SpringBoot.java
+/workspace/fsuWeatherRestApi/src/main/java/org/openapitools/api/WeatherApi.java
+/workspace/fsuWeatherRestApi/src/main/java/org/openapitools/connectors/AwsIotConnector.java
+/workspace/fsuWeatherRestApi/src/main/java/org/openapitools/connectors/WeatherstackConnector.java
+/workspace/fsuWeatherRestApi/src/main/java/org/openapitools/configuration/OpenAPIDocumentationConfig.java
+/workspace/fsuWeatherRestApi/src/main/java/org/openapitools/model/Weather.java
+/workspace/fsuWeatherRestApi/src/main/java/org/openapitools/api/ApiUtil.java
+/workspace/fsuWeatherRestApi/src/main/java/org/openapitools/model/Location.java
+/workspace/fsuWeatherRestApi/src/main/java/org/openapitools/configuration/HomeController.java
+/workspace/fsuWeatherRestApi/src/main/java/org/openapitools/connectors/AwsDynamoDbConnector.java
+/workspace/fsuWeatherRestApi/src/main/java/org/openapitools/RFC3339DateFormat.java
