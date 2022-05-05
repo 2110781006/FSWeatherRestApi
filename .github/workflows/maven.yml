@@ -44,6 +44,7 @@ jobs:
     - name: Docker build
       run: |
         docker build . -t myapp
+    - run: dir
     - run: mkdir staging && cp my* staging
     - uses: actions/upload-artifact@v2
       with:
