@@ -44,4 +44,8 @@ jobs:
     - name: Docker build
       run: |
         docker build . -t myapp
+    - uses: actions/upload-artifact@v2
+      with:
+        name: myDocker
+        path: staging
 
