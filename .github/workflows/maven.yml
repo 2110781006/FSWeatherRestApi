@@ -52,5 +52,5 @@ jobs:
       with:
         name: myDocker
         path: staging
-    - run: docker run -8080:8080/tcp myapp
+    - run: docker run -p 8080:8080/tcp myapp
 
