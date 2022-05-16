@@ -51,8 +51,9 @@ jobs:
         name: myDocker
         path: staging
     - name: Archive production artifacts
+    - run: mkdir dist && cp target/myapp.tar dist/myapp.tar
       uses: actions/upload-artifact@v3
       with:
         name: myDocker
-        path: staging
+        path: dist
 
